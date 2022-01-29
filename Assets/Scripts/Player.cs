@@ -29,16 +29,16 @@ public class Player : MonoBehaviour
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-        if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f)) { alreadyJumping = false; }
+        if (Physics2D.Raycast(transform.position, Vector3.down, 1.2f)) { alreadyJumping = false; }
 
         //giramos si vamos a la izquierda
         if (horizontal < 0.0f)
         {
-            transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (horizontal > 0.0f)
         {
-            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
         // Saltamos si pulsamos w
