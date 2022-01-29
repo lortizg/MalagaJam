@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -12,9 +10,14 @@ public class Player : MonoBehaviour
     private GameObject[] objetosAIgnorarFalso;
     private GameObject[] objetosAIgnorarTrue;
     public GameObject mundo;
+    public GameObject area;
 
     public float JumpForce=150;
     public float Speed=1;
+    private bool noMoverse=false;
+    private Vector3 posicionNoMoverse;
+    private bool OnArea=false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +47,27 @@ public class Player : MonoBehaviour
             Jump();
         }
 
+        //Si pulsamos e atacamos
+        if (Input.GetKeyDown(KeyCode.E)) {
+            
+            area.gameObject.SetActive(true);
+            OnArea = true;
+        }
+        if (OnArea) {
+            if (Input.GetMouseButtonDown(0)) {
+                AreaSeleccion component = area.GetComponent<AreaSeleccion>();
+                component.seleccionar();
+                GameObject.Find("Area").gameObject.SetActive(false);
+                noMoverse = true;
+                posicionNoMoverse = transform.position;
+                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                GetComponent<Animator>().SetTrigger("activarAtaque");
+                OnArea = false;
+            }
+        }
+        if (noMoverse) {
+            //transform.position = posicionNoMoverse;
+        }
         // cambiar mapa
         if (Input.GetKeyDown(KeyCode.F5))
         {
@@ -97,11 +121,16 @@ public class Player : MonoBehaviour
     private void cambiarMapa(Transform mundo) {
         //Debug.Log(mundo.transform.position.z);
         transform.position = new Vector3(transform.position.x, transform.position.y, mundo.transform.position.z);
+        
     }
     private void FixedUpdate()
     {
         Rigidbody2D.velocity =new Vector2(horizontal*Speed,Rigidbody2D.velocity.y);
     }
 
+    public void EndAnimation() 
+    {
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
 
 }
