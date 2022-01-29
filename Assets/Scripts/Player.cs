@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         Rigidbody2D = GetComponent<Rigidbody2D>();
-        muertePosition = GameObject.Find("Muerte").transform.position.z;
+        muertePosition = GameObject.Find("tutorial_frente_0_Malo").transform.position.z;
     }
 
     // Update is called once per frame
@@ -71,9 +71,11 @@ public class Player : MonoBehaviour
         // cambiar mapa
         if (Input.GetKeyDown(KeyCode.F5))
         {
+
+            Debug.Log("f5 pulsada");
             if (!mundoFalso)
             {
-                cambiarMapa(GameObject.Find("Muerte").transform);
+                cambiarMapa(GameObject.Find("tutorial_frente_0Malo").transform);
                 mundoFalso = true;
                 // enableamos colision con muerte
                 foreach (GameObject obj in objetosAIgnorarTrue) {
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                cambiarMapa(GameObject.Find("Tilemap").transform);
+                cambiarMapa(GameObject.Find("tutorial_frente_0").transform);
                 mundoFalso = false;
                 // enableamos colision con mundo
                 foreach (GameObject obj in objetosAIgnorarFalso) {
