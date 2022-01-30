@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private bool noMoverse=false;
     private Vector3 posicionNoMoverse;
     private bool OnArea=false;
+    private GameObject EnemigoADestruir;
 
     // Start is called before the first frame update
     void Start()
@@ -69,14 +70,11 @@ public class Player : MonoBehaviour
                 //GameObject area = GameObject.Find("Area").gameObject;
                 area.SetActive(false);
                 if (enemigo!=area) {
-                    Debug.Log("a");
+                    EnemigoADestruir = enemigo;
                     noMoverse = true;
                     posicionNoMoverse = transform.position;
                     GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                     GetComponent<Animator>().SetTrigger("activarAtaque");
-                }
-                else {
-                    Debug.Log("e");
                 }
                 OnArea = false;
             }
@@ -146,9 +144,9 @@ public class Player : MonoBehaviour
         Rigidbody2D.velocity =new Vector2(horizontal*Speed,Rigidbody2D.velocity.y);
     }
 
-    public void EndAnimation(GameObject enemigo) 
+    public void EndAnimation() 
     {
-        Destroy(enemigo);
+        Destroy(EnemigoADestruir);
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         
     }
