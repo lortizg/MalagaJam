@@ -65,12 +65,19 @@ public class Player : MonoBehaviour
         if (OnArea) {
             if (Input.GetMouseButtonDown(0)) {
                 AreaSeleccion component = area.GetComponent<AreaSeleccion>();
-                component.seleccionar();
-                GameObject.Find("Area").gameObject.SetActive(false);
-                noMoverse = true;
-                posicionNoMoverse = transform.position;
-                GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-                GetComponent<Animator>().SetTrigger("activarAtaque");
+                GameObject enemigo = component.seleccionar();
+                //GameObject area = GameObject.Find("Area").gameObject;
+                area.SetActive(false);
+                if (enemigo!=area) {
+                    Debug.Log("a");
+                    noMoverse = true;
+                    posicionNoMoverse = transform.position;
+                    GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                    GetComponent<Animator>().SetTrigger("activarAtaque");
+                }
+                else {
+                    Debug.Log("e");
+                }
                 OnArea = false;
             }
         }
@@ -139,9 +146,11 @@ public class Player : MonoBehaviour
         Rigidbody2D.velocity =new Vector2(horizontal*Speed,Rigidbody2D.velocity.y);
     }
 
-    public void EndAnimation() 
+    public void EndAnimation(GameObject enemigo) 
     {
+        Destroy(enemigo);
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        
     }
 
 }

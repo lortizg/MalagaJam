@@ -54,13 +54,20 @@ public class AreaSeleccion : MonoBehaviour
         //seleccionar();
 
     }
-    public void seleccionar() {
+    public GameObject seleccionar() {
         Collider2D[] area=Physics2D.OverlapCircleAll(transform.position, transform.GetComponent<CircleCollider2D>().radius*transform.localScale.x);
-        foreach(Collider2D obj in area) {
-            if (obj.tag == "enemy") {
-                Debug.Log("enemigo");
-                Destroy(obj.gameObject);
+        bool encontrado = false;
+        GameObject enemigo=this.gameObject;
+        for(int i=0; i < area.Length && !encontrado; i++) {
+            if (area[i].tag == "enemy") {
+                //Debug.Log("enemigo");
+                enemigo=area[i].gameObject;
+                encontrado = true;
             }
         }
+        return enemigo;
+    }
+    public void finAnimacionArea() {
+
     }
 }
