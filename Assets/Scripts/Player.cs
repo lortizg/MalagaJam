@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
     private float horizontal;
     private bool alreadyJumping=false;
     private float muertePosition;
-    private bool mundoFalso = false;
+    public bool mundoFalso = false;
     private GameObject[] objetosAIgnorarFalso;
     private GameObject[] objetosAIgnorarTrue;
     public GameObject mundo;
@@ -22,28 +22,37 @@ public class Player : MonoBehaviour
     void Start()
     {
         Rigidbody2D = GetComponent<Rigidbody2D>();
-        muertePosition = GameObject.Find("tutorial_frente_0_Malo").transform.position.z;
+        muertePosition = GameObject.Find("tutorial_frente_0Malo").transform.position.z;
     }
 
     // Update is called once per frame
     void Update()
     {
+        GetComponent<Animator>().SetBool("IsJumping", alreadyJumping);
         horizontal = Input.GetAxisRaw("Horizontal");
-        if (Physics2D.Raycast(transform.position, Vector3.down, 1.2f)) { alreadyJumping = false; }
+        if (Physics2D.Raycast(transform.position, Vector3.down, (transform.GetComponent<CapsuleCollider2D>().size.y/1.95f)*transform.localScale.y)) { alreadyJumping = false; }
 
         //giramos si vamos a la izquierda
-        if (horizontal < 0.0f)
+        if (horizontal < -0.05f)
         {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            GetComponent<Animator>().SetBool("IsWalking", true);
+            //GameObject cam=
         }
-        else if (horizontal > 0.0f)
+        else if (horizontal > 0.05f)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            GetComponent<Animator>().SetBool("IsWalking", true);
+        }
+        else
+        {
+            GetComponent<Animator>().SetBool("IsWalking", false);
         }
 
         // Saltamos si pulsamos w
         if (Input.GetKeyDown(KeyCode.W) && !alreadyJumping)
         {
+            //Debug.Log("Saltando");
             Jump();
         }
 
